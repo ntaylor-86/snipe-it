@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix' => 'consumables', 'middleware' => ['auth']], function () {
+    /**
+     * Checkout
+     */
     Route::get(
         '{consumablesID}/checkout',
         [Consumables\ConsumableCheckoutController::class, 'create']
@@ -15,7 +18,19 @@ Route::group(['prefix' => 'consumables', 'middleware' => ['auth']], function () 
         '{consumablesID}/checkout',
         [Consumables\ConsumableCheckoutController::class, 'store']
     )->name('checkout/consumable');
+        
+    /**
+     * Replenish
+     */
+    Route::get(
+        '{consumablesID}/replenish',
+        [Consumables\ConsumableReplenishController::class, 'create']
+    )->name('replenish/consumable');
 
+    Route::post(
+        '{consumablesID}/replenish',
+        [Consumables\ConsumableReplenishController::class, 'store']
+    )->name('replenish/consumable');
 
 });
     

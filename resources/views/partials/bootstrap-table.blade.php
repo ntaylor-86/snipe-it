@@ -352,7 +352,19 @@
 
             // The user is allowed to check items out, AND the item is deployable
             if ((row.available_actions.checkout == true) && (row.user_can_checkout == true) && ((!row.asset_id) && (!row.assigned_to))) {
-                    return '<a href="{{ url('/') }}/' + destination + '/' + row.id + '/checkout" class="btn btn-sm bg-maroon" data-toggle="tooltip" title="{{ trans('general.checkout_tooltip') }}">{{ trans('general.checkout') }}</a>';
+
+                var checkOutButtons = `
+                    <a href="{{ url('/') }}/` + destination + `/` + row.id + `/checkout" class="btn btn-sm bg-maroon" data-toggle="tooltip" title="{{ trans('general.checkout_tooltip') }}">{{ trans('general.checkout') }}</a>
+                `;
+
+                // The user is allowed to replenish consumable
+                if (row.available_actions.replenish !== undefined && row.available_actions.replenish == true) {
+                    checkOutButtons += `
+                        <a href="{{ url('/') }}/` + destination + `/` + row.id + `/replenish" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Replenish this item's stock">Replenish</a>
+                    `;
+                }
+                
+                return checkOutButtons;
 
             // The user is allowed to check items out, but the item is not deployable
             } else if (((row.user_can_checkout == false)) && (row.available_actions.checkout == true) && (!row.assigned_to)) {
